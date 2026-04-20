@@ -12,6 +12,6 @@ COPY . ./backend
 
 RUN chmod +x ./backend/entrypoint.sh
 
-EXPOSE 8000
+EXPOSE 8080
 
 ENTRYPOINT ["./backend/entrypoint.sh"]

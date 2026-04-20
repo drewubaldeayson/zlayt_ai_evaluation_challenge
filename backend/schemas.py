@@ -6,6 +6,7 @@ class QueryRequest(BaseModel):
     question: str
 
 class QueryResponse(BaseModel):
+    id: int
     answer: str
     retrieved_faqs: List[str] # List of titles or IDs
 
@@ -14,7 +15,11 @@ class LogEntry(BaseModel):
     user_query: str
     retrieved_faq_titles: Optional[str]
     ai_response: str
+    feedback: int
     timestamp: datetime.datetime
 
     class Config:
         from_attributes = True
+
+class FeedbackRequest(BaseModel):
+    feedback: int

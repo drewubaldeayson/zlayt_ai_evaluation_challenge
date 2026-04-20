@@ -1,32 +1,35 @@
 import os
+import logging
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.schema import Document
 from langchain.prompts import PromptTemplate
-from langchain.chains import RetrievalQA
+
+logger = logging.getLogger(__name__)
 
 CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")
 
-# Initialize embeddings and LLM
-# They will pull the OPENAI_API_KEY from environment variables automatically.
-embeddings = OpenAIEmbeddings(
-    model="text-embedding-3-small", 
-    openai_api_key=os.getenv("OPENAI_API_KEY")
-)
-llm = ChatOpenAI(
-    model_name="gpt-3.5-turbo", 
-    temperature=0.0, 
-    openai_api_key=os.getenv("OPENAI_API_KEY")
-)
+try:
+    embeddings = OpenAIEmbeddings(
+        model="text-embedding-3-small", 
+        openai_api_key=os.getenv("OPENAI_API_KEY")
+    )
+    llm = ChatOpenAI(
+        model_name="gpt-3.5-turbo", 
+        temperature=0.0, 
+        openai_api_key=os.getenv("OPENAI_API_KEY")
+    )
 
-# Create ChromaDB collection
-vectorstore = Chroma(
-    collection_name="legal_faqs",
-    embedding_function=embeddings,
-    persist_directory=CHROMA_PERSIST_DIR
-)
+    vectorstore = Chroma(
+        collection_name="legal_faqs",
+        embedding_function=embeddings,
+        persist_directory=CHROMA_PERSIST_DIR
+    )
+except Exception as e:
+    logger.error(f"Failed to initialize LangChain dependencies. Missing/Invalid API Key? Error: {e}")
+    vectorstore = None
+    llm = None
 
-# We use a custom prompt for generating answers
 prompt_template = """
 You are a helpful and knowledgeable legal assistant. 
 Use the following pieces of context to answer the user's question. 
@@ -44,8 +47,18 @@ QA_PROMPT = PromptTemplate(
 )
 
 def retrieve_and_generate(question: str):
-    # Retrieve top 2 most relevant FAQs
-    docs = vectorstore.similarity_search(question, k=2)
+    if not vectorstore or not llm:
+        return {
+            "answer": "I'm currently unable to connect to my AI processing service (likely due to missing or rate-limited API keys). Please check your configuration and try again later.",
+            "retrieved_faqs": []
+        }
+
+    try:
+        # Retrieve top 2 most relevant FAQs
+        docs = vectorstore.similarity_search(question, k=2)
+    except Exception as e:
+        logger.error(f"Vector search failed: {e}")
+        docs = []
     
     # Extract context and titles
     context = ""
@@ -54,16 +67,29 @@ def retrieve_and_generate(question: str):
         context += f"Q: {doc.metadata.get('title', 'Unknown Question')}\nA: {doc.page_content}\n\n"
         retrieved_titles.append(doc.metadata.get('title', 'Unknown Question'))
 
-    # Generate answer
-    chain = QA_PROMPT | llm
-    response = chain.invoke({"context": context, "question": question})
+    if not docs:
+        return {
+            "answer": "I couldn't find any relevant legal FAQs in my database for your question.",
+            "retrieved_faqs": []
+        }
+
+    try:
+        # Generate answer
+        chain = QA_PROMPT | llm
+        response = chain.invoke({"context": context, "question": question})
+        answer = response.content
+    except Exception as e:
+        logger.error(f"LLM Generation failed: {e}")
+        answer = f"My AI generation service is temporarily unavailable (possibly quota exceeded), but I found this relevant information in my database:\n\n{context}"
     
     return {
-        "answer": response.content,
+        "answer": answer,
         "retrieved_faqs": retrieved_titles
     }
 
 def add_faqs_to_vectorstore(faqs):
+    if not vectorstore:
+        raise Exception("Vectorstore is not initialized.")
     documents = []
     for faq in faqs:
         doc = Document(

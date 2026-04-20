@@ -22,6 +22,7 @@ class QueryLog(Base):
     user_query = Column(Text, nullable=False)
     retrieved_faq_titles = Column(Text, nullable=True) # Stored as JSON string or comma-separated
     ai_response = Column(Text, nullable=False)
+    feedback = Column(Integer, default=0) # 1 = Thumbs Up, -1 = Thumbs Down, 0 = None
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
 def init_db():

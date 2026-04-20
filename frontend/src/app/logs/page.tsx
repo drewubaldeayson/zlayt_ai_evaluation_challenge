@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import { Loader2 } from "lucide-react";
+import { Loader2, ThumbsUp, ThumbsDown } from "lucide-react";
 
 interface LogEntry {
   id: number;
   user_query: string;
   retrieved_faq_titles: string;
   ai_response: string;
+  feedback: number;
   timestamp: string;
 }
 
@@ -21,12 +22,12 @@ export default function LogsPage() {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
         const response = await axios.get(`${apiUrl}/api/logs`);
         setLogs(response.data);
       } catch (err) {
         console.error(err);
-        setError("Failed to load logs.");
+        setError("Failed to load logs. Ensure the backend is running on port 8080.");
       } finally {
         setLoading(false);
       }
@@ -51,10 +52,35 @@ export default function LogsPage() {
     );
   }
 
+  // Calculate simple stats
+  const totalQueries = logs.length;
+  const positiveFeedback = logs.filter(l => l.feedback === 1).length;
+  const negativeFeedback = logs.filter(l => l.feedback === -1).length;
+
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800">Query Logs</h2>
-      <p className="text-gray-500">History of user questions and AI responses.</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">Analytics & Logs</h2>
+          <p className="text-gray-500">History of user questions, AI responses, and feedback.</p>
+        </div>
+      </div>
+
+      {/* Analytics Dashboard */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col">
+          <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Total Queries</span>
+          <span className="text-3xl font-bold text-gray-900 mt-2">{totalQueries}</span>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col">
+          <span className="text-sm font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2"><ThumbsUp className="w-4 h-4 text-green-500"/> Positive Feedback</span>
+          <span className="text-3xl font-bold text-green-600 mt-2">{positiveFeedback}</span>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col">
+          <span className="text-sm font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2"><ThumbsDown className="w-4 h-4 text-red-500"/> Negative Feedback</span>
+          <span className="text-3xl font-bold text-red-600 mt-2">{negativeFeedback}</span>
+        </div>
+      </div>
 
       {logs.length === 0 ? (
         <div className="bg-white p-8 text-center rounded-xl shadow-sm border border-gray-100 text-gray-500">
@@ -80,9 +106,13 @@ export default function LogsPage() {
                     <h4 className="text-sm font-bold text-gray-500 uppercase">Question</h4>
                     <p className="text-gray-900 font-medium mt-1">{log.user_query}</p>
                   </div>
-                  <span className="text-xs text-gray-400 whitespace-nowrap">
-                    {format(new Date(log.timestamp + "Z"), "PPpp")}
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="text-xs text-gray-400 whitespace-nowrap">
+                      {format(new Date(log.timestamp + "Z"), "PPpp")}
+                    </span>
+                    {log.feedback === 1 && <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold flex items-center gap-1"><ThumbsUp className="w-3 h-3"/> Helpful</span>}
+                    {log.feedback === -1 && <span className="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold flex items-center gap-1"><ThumbsDown className="w-3 h-3"/> Not Helpful</span>}
+                  </div>
                 </div>
 
                 <div>
