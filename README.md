@@ -4,7 +4,7 @@ This project is a lightweight, production-ready Question-and-Answer (Q&A) web ap
 
 ---
 
-## 🌟 Key Features (MVP + Extra Features)
+## Key Features (MVP + Extra Features)
 
 To demonstrate technical excellence beyond the MVP requirements, several advanced features were implemented:
 
@@ -23,7 +23,7 @@ To demonstrate technical excellence beyond the MVP requirements, several advance
 
 ---
 
-## 🚀 Setup & Run Instructions (For Reviewers)
+## Setup & Run Instructions (For Reviewers)
 
 The application is completely containerized and requires minimal setup. The vector database (`ChromaDB`) and the relational database (`logs.db`) are generated automatically on startup, ensuring a 100% clean state for your review.
 
@@ -55,7 +55,7 @@ docker-compose up --build -d
 
 ---
 
-## 🏗 Architecture & Design
+## Architecture & Design
 
 1. **Backend (FastAPI, Python)**:
    - Provides REST APIs to ingest FAQs, process queries, handle feedback, and retrieve logs.
@@ -73,7 +73,7 @@ docker-compose up --build -d
 
 ---
 
-## ⏱ Project Evaluation & Estimates
+## Project Evaluation & Estimates
 
 **Estimated Time to Complete**: **4 hours**
 - **1 hour**: Environment setup, Git repository initialization, and generating the dataset of 50 legal FAQs.
