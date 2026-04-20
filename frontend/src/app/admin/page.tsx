@@ -180,6 +180,21 @@ export default function AdminDashboard() {
                   <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
                     {log.ai_response}
                   </p>
+                  {titles && titles.length > 0 && titles[0] && (
+                    <div className="mt-4">
+                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Retrieved FAQs</h4>
+                      <ul className="space-y-1">
+                        {titles.map((t: any, i: number) => {
+                          const titleText = typeof t === 'string' ? t : t.title;
+                          return (
+                            <li key={i} className="text-sm text-rose-600 font-medium">
+                              • {titleText}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 {/* Audit Details */}

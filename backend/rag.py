@@ -55,20 +55,32 @@ def retrieve_and_generate(question: str):
         }
 
     try:
-        # Retrieve top 2 most relevant FAQs
-        docs = vectorstore.similarity_search(question, k=2)
+        # Retrieve more to ensure we can filter duplicates
+        docs = vectorstore.similarity_search(question, k=4)
     except Exception as e:
         logger.error(f"Vector search failed: {e}")
         docs = []
     
-    # Extract context and titles
-    context = ""
-    retrieved_titles = []
+    # Deduplicate and extract context
+    unique_docs = []
+    seen_titles = set()
     for doc in docs:
-        context += f"Q: {doc.metadata.get('title', 'Unknown Question')}\nA: {doc.page_content}\n\n"
-        retrieved_titles.append(doc.metadata.get('title', 'Unknown Question'))
+        title = doc.metadata.get('title', 'Unknown Question')
+        if title not in seen_titles:
+            seen_titles.add(title)
+            unique_docs.append(doc)
+        if len(unique_docs) == 2:
+            break
 
-    if not docs:
+    context = ""
+    retrieved_sources = []
+    for doc in unique_docs:
+        title = doc.metadata.get('title', 'Unknown Question')
+        content = doc.page_content
+        context += f"Q: {title}\nA: {content}\n\n"
+        retrieved_sources.append({"title": title, "content": content})
+
+    if not unique_docs:
         return {
             "answer": "I couldn't find any relevant legal FAQs in my database for your question.",
             "retrieved_faqs": []
@@ -85,7 +97,7 @@ def retrieve_and_generate(question: str):
     
     return {
         "answer": answer,
-        "retrieved_faqs": retrieved_titles
+        "retrieved_faqs": retrieved_sources
     }
 
 def add_faqs_to_vectorstore(faqs):

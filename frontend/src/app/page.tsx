@@ -2,14 +2,20 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Send, Loader2, FileText, ThumbsUp, ThumbsDown, Sparkles, Scale, History, PlusCircle } from "lucide-react";
+import { Send, Loader2, FileText, ThumbsUp, ThumbsDown, Sparkles, Scale, History, PlusCircle, ChevronDown, ChevronUp, CheckCircle2, Copy, Check } from "lucide-react";
+
 import { format } from "date-fns";
+
+interface FAQSource {
+  title: string;
+  content: string;
+}
 
 interface HistoryItem {
   id: number;
   question: string;
   answer: string;
-  retrievedFaqs: string[];
+  retrievedFaqs: FAQSource[];
   feedbackGiven: number | null;
   timestamp: string;
 }
@@ -17,11 +23,13 @@ interface HistoryItem {
 export default function Home() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState<string | null>(null);
-  const [retrievedFaqs, setRetrievedFaqs] = useState<string[]>([]);
+  const [retrievedFaqs, setRetrievedFaqs] = useState<FAQSource[]>([]);
   const [logId, setLogId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [feedbackGiven, setFeedbackGiven] = useState<number | null>(null);
+  const [expandedSource, setExpandedSource] = useState<number | null>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   
   // History state
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -115,10 +123,18 @@ export default function Home() {
   const loadFromHistory = (item: HistoryItem) => {
     setQuestion(item.question);
     setAnswer(item.answer);
-    setRetrievedFaqs(item.retrievedFaqs);
+    
+    // Support backwards compatibility for old string array formats in history
+    if (item.retrievedFaqs && typeof item.retrievedFaqs[0] === 'string') {
+      setRetrievedFaqs(item.retrievedFaqs.map(f => ({ title: f as any, content: "Content not available in old history log." })));
+    } else {
+      setRetrievedFaqs(item.retrievedFaqs || []);
+    }
+
     setLogId(item.id);
     setFeedbackGiven(item.feedbackGiven);
     setError(null);
+    setExpandedSource(null);
   };
 
   const startNewChat = () => {
@@ -128,6 +144,13 @@ export default function Home() {
     setLogId(null);
     setFeedbackGiven(null);
     setError(null);
+    setExpandedSource(null);
+  };
+
+  const copyToClipboard = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
   };
 
   return (
@@ -263,21 +286,55 @@ export default function Home() {
             </div>
 
             {/* Context References */}
-            {retrievedFaqs.length > 0 && (
-              <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60 backdrop-blur-sm">
+            {retrievedFaqs && retrievedFaqs.length > 0 && (
+              <div className="bg-slate-50/50 p-6 rounded-3xl border border-slate-200/60 backdrop-blur-sm">
                 <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <FileText className="w-4 h-4 text-indigo-400" />
                   Sources Consulted
                 </h4>
                 <ul className="grid gap-3">
                   {retrievedFaqs.map((faq, index) => (
-                    <li key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                      <div className="mt-0.5 bg-indigo-100 p-1 rounded-md text-indigo-600">
-                        <FileText className="w-3 h-3" />
+                    <li key={index} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all hover:border-indigo-200">
+                      <div 
+                        className="p-4 cursor-pointer flex items-center justify-between"
+                        onClick={() => setExpandedSource(expandedSource === index ? null : index)}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5 bg-indigo-50 p-1.5 rounded-lg text-indigo-600">
+                            <FileText className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <h5 className="text-sm font-semibold text-slate-800 leading-snug pr-2">
+                              {typeof faq === 'string' ? faq : faq.title}
+                            </h5>
+                            <div className="flex items-center gap-2 mt-1.5">
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                <CheckCircle2 className="w-3 h-3" /> Verified Internal Source
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        {typeof faq !== 'string' && (
+                          <div className="text-slate-400 p-1">
+                            {expandedSource === index ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                          </div>
+                        )}
                       </div>
-                      <span className="text-sm font-medium text-slate-700 leading-snug">
-                        {faq}
-                      </span>
+                      
+                      {typeof faq !== 'string' && expandedSource === index && (
+                        <div className="px-4 pb-4 pt-2 border-t border-slate-50 bg-slate-50/30">
+                          <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                            {faq.content}
+                          </p>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); copyToClipboard(`Source: ${faq.title}\nContent: ${faq.content}`, index); }}
+                            className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors"
+                          >
+                            {copiedIndex === index ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                            {copiedIndex === index ? "Copied!" : "Copy Citation"}
+                          </button>
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>

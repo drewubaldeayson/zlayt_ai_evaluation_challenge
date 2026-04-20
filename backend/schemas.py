@@ -5,10 +5,14 @@ import datetime
 class QueryRequest(BaseModel):
     question: str
 
+class FAQSource(BaseModel):
+    title: str
+    content: str
+
 class QueryResponse(BaseModel):
     id: int
     answer: str
-    retrieved_faqs: List[str] # List of titles or IDs
+    retrieved_faqs: List[FAQSource] # List of rich objects
 
 class LogEntry(BaseModel):
     id: int
