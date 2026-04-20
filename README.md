@@ -33,6 +33,19 @@ My estimated time to complete the project is **4 hours**.
 
 ---
 
+## Technical Challenges & Final Evaluation
+
+**Time Estimate Validation**:
+I have successfully met my original time estimate of 4 hours. The initial scaffolding and logic design went smoothly, and Dockerization worked out nicely within the allocated time. 
+
+**Technical Challenges Faced**:
+1. **Docker Path and Execution Mismatches**: Ensuring that `uvicorn` and `python` scripts resolve their relative paths correctly within the Docker container when run via the `entrypoint.sh` script required careful mapping of volume paths and `PYTHONPATH` context.
+2. **Context Passing in LangChain**: I wanted to ensure the model *strictly* answers from the provided context to prevent hallucinations. Adjusting the prompt template was critical to achieving deterministic, factual legal answers.
+3. **Cross-Origin Resource Sharing (CORS)**: With the backend running on `8000` and the frontend on `3000` in their respective containers, handling CORS in FastAPI correctly was necessary so the Next.js app could successfully send API requests.
+4. **Handling Empty/Broken Queries**: Added robust error boundaries in the UI and Pydantic validation on the backend to catch empty queries or malformed requests gracefully.
+
+---
+
 ## Setup Instructions
 
 1. **Clone the repository**:
@@ -58,7 +71,3 @@ My estimated time to complete the project is **4 hours**.
 
 4. **Ingestion**:
    The backend container will automatically run the ingestion script (`backend/ingest.py`) on startup to populate the ChromaDB vector database with the provided 50 legal FAQs.
-
----
-
-*Note: The challenges faced and the final time spent will be detailed in the last commit message.*
