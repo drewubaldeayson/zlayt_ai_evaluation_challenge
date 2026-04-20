@@ -9,8 +9,15 @@ CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")
 
 # Initialize embeddings and LLM
 # They will pull the OPENAI_API_KEY from environment variables automatically.
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
+embeddings = OpenAIEmbeddings(
+    model="text-embedding-3-small", 
+    openai_api_key=os.getenv("OPENAI_API_KEY")
+)
+llm = ChatOpenAI(
+    model_name="gpt-3.5-turbo", 
+    temperature=0.0, 
+    openai_api_key=os.getenv("OPENAI_API_KEY")
+)
 
 # Create ChromaDB collection
 vectorstore = Chroma(
