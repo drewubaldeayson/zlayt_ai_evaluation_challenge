@@ -1,7 +1,8 @@
 import os
 import logging
 from langchain_chroma import Chroma
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_openai import ChatOpenAI
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document
 from langchain.prompts import PromptTemplate
 
@@ -10,10 +11,10 @@ logger = logging.getLogger(__name__)
 CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")
 
 try:
-    embeddings = OpenAIEmbeddings(
-        model="text-embedding-3-small", 
-        openai_api_key=os.getenv("OPENAI_API_KEY")
-    )
+    # Use local embeddings to avoid OpenAI quota limits on vector DB
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    
+    # Use OpenAI for generation only
     llm = ChatOpenAI(
         model_name="gpt-3.5-turbo", 
         temperature=0.0, 
