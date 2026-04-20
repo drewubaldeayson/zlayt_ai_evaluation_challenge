@@ -4,7 +4,6 @@ import datetime
 import os
 
 DATABASE_URL = "sqlite:///./logs.db"
-# Use a specific URL if provided in env
 if os.getenv("DATABASE_URL"):
     DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -20,9 +19,12 @@ class QueryLog(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_query = Column(Text, nullable=False)
-    retrieved_faq_titles = Column(Text, nullable=True) # Stored as JSON string or comma-separated
+    retrieved_faq_titles = Column(Text, nullable=True)
     ai_response = Column(Text, nullable=False)
     feedback = Column(Integer, default=0) # 1 = Thumbs Up, -1 = Thumbs Down, 0 = None
+    ip_address = Column(String(100), nullable=True)
+    user_agent = Column(Text, nullable=True)
+    country = Column(String(100), nullable=True)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
 def init_db():

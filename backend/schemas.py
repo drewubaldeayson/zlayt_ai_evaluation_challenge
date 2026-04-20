@@ -16,6 +16,9 @@ class LogEntry(BaseModel):
     retrieved_faq_titles: Optional[str]
     ai_response: str
     feedback: int
+    ip_address: Optional[str]
+    user_agent: Optional[str]
+    country: Optional[str]
     timestamp: datetime.datetime
 
     class Config:
@@ -23,3 +26,7 @@ class LogEntry(BaseModel):
 
 class FeedbackRequest(BaseModel):
     feedback: int
+
+class AdminLoginRequest(BaseModel):
+    username: str
+    password: str
