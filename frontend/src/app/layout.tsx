@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { Scale, MessageSquare, History } from "lucide-react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Legal FAQ Q&A",
-  description: "AI-powered legal FAQ assistant",
+  title: "Legal AI Assistant",
+  description: "Professional AI-powered legal FAQ assistant",
 };
 
 export default function RootLayout({
@@ -17,25 +18,43 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-50 min-h-screen`}>
-        <nav className="bg-white shadow-sm">
+      <body className={`${inter.className} bg-slate-50 min-h-screen flex flex-col text-slate-900`}>
+        <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
           <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 className="text-xl font-bold text-gray-800">
-              <Link href="/">Legal AI Assistant</Link>
-            </h1>
-            <div className="space-x-4">
-              <Link href="/" className="text-gray-600 hover:text-gray-900 font-medium">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="bg-indigo-600 p-2 rounded-lg text-white group-hover:bg-indigo-700 transition-colors shadow-sm">
+                <Scale className="w-5 h-5" />
+              </div>
+              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-900 to-slate-800">
+                Legal AI Assistant
+              </h1>
+            </Link>
+            <div className="flex gap-2">
+              <Link 
+                href="/" 
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              >
+                <MessageSquare className="w-4 h-4" />
                 Ask
               </Link>
-              <Link href="/logs" className="text-gray-600 hover:text-gray-900 font-medium">
+              <Link 
+                href="/logs" 
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              >
+                <History className="w-4 h-4" />
                 Logs
               </Link>
             </div>
           </div>
         </nav>
-        <main className="max-w-5xl mx-auto px-4 py-8">
+        <main className="max-w-5xl mx-auto px-4 py-10 w-full flex-1">
           {children}
         </main>
+        <footer className="border-t border-slate-200 bg-white py-6 mt-auto">
+          <div className="max-w-5xl mx-auto px-4 text-center text-sm text-slate-500">
+            &copy; {new Date().getFullYear()} Legal AI Assistant MVP. All rights reserved.
+          </div>
+        </footer>
       </body>
     </html>
   );

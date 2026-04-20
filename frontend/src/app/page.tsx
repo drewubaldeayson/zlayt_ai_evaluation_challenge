@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { Send, Loader2, FileText, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Send, Loader2, FileText, ThumbsUp, ThumbsDown, Sparkles, Scale } from "lucide-react";
 
 export default function Home() {
   const [question, setQuestion] = useState("");
@@ -11,7 +11,7 @@ export default function Home() {
   const [logId, setLogId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [feedbackGiven, setFeedbackGiven] = useState<number | null>(null); // 1 for up, -1 for down
+  const [feedbackGiven, setFeedbackGiven] = useState<number | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,104 +47,126 @@ export default function Home() {
     if (!logId || feedbackGiven !== null) return;
 
     try {
-      setFeedbackGiven(val); // optimistic update
+      setFeedbackGiven(val);
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
       await axios.post(`${apiUrl}/api/logs/${logId}/feedback`, {
         feedback: val
       });
     } catch (err) {
       console.error("Failed to submit feedback", err);
-      setFeedbackGiven(null); // revert if failed
+      setFeedbackGiven(null);
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8">
-      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Ask a Legal Question</h2>
-        <p className="text-gray-500 mb-6">
-          Get answers based on our comprehensive legal FAQ database.
+    <div className="max-w-3xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-in-out">
+      {/* Hero Section */}
+      <div className="text-center space-y-4 pt-4 pb-6">
+        <div className="inline-flex items-center justify-center p-3 bg-indigo-50 rounded-2xl mb-2 text-indigo-600">
+          <Scale className="w-8 h-8" />
+        </div>
+        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
+          Your Intelligent Legal Companion
+        </h1>
+        <p className="text-lg text-slate-500 max-w-xl mx-auto leading-relaxed">
+          Ask questions based on our curated legal knowledge base and receive instant, context-aware answers powered by AI.
         </p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="relative">
-          <textarea
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="E.g., What is a contract?"
-            className="w-full p-4 pr-16 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none outline-none"
-            rows={4}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSubmit(e);
-              }
-            }}
-          />
-          <button
-            type="submit"
-            disabled={loading || !question.trim()}
-            className="absolute bottom-4 right-4 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
-          >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
-          </button>
+      {/* Input Card */}
+      <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-all">
+        <form onSubmit={handleSubmit} className="relative group">
+          <div className="absolute inset-0 bg-indigo-500/5 rounded-2xl blur-xl group-focus-within:bg-indigo-500/10 transition-all duration-500" />
+          <div className="relative">
+            <textarea
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="What legal question can I help you with today? (e.g., 'What is a contract?')"
+              className="w-full p-5 pr-20 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 resize-none outline-none text-slate-800 placeholder:text-slate-400 transition-all duration-300"
+              rows={4}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
+            />
+            <button
+              type="submit"
+              disabled={loading || !question.trim()}
+              className="absolute bottom-4 right-4 p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-500 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center"
+            >
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5 translate-x-0.5" />}
+            </button>
+          </div>
         </form>
 
         {error && (
-          <div className="mt-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-100">
+          <div className="mt-6 p-4 bg-rose-50 text-rose-700 rounded-xl border border-rose-100 text-sm font-medium flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
             {error}
           </div>
         )}
       </div>
 
+      {/* Answer Section */}
       {answer && (
-        <div className="space-y-6">
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex justify-between items-start mb-4">
-              <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
-                  AI
-                </span>
-                Answer
-              </h3>
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center shadow-inner">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800">
+                  AI Response
+                </h3>
+              </div>
               
-              <div className="flex gap-2">
+              <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-full border border-slate-100">
                 <button 
                   onClick={() => handleFeedback(1)}
                   disabled={feedbackGiven !== null}
-                  className={`p-2 rounded-full transition-colors ${feedbackGiven === 1 ? 'bg-green-100 text-green-600' : 'text-gray-400 hover:bg-gray-100'}`}
+                  className={`p-2 rounded-full transition-all duration-300 ${feedbackGiven === 1 ? 'bg-emerald-100 text-emerald-600 shadow-sm' : 'text-slate-400 hover:text-emerald-600 hover:bg-white hover:shadow-sm'}`}
                   title="Helpful"
                 >
-                  <ThumbsUp className="w-5 h-5" />
+                  <ThumbsUp className="w-4 h-4" />
                 </button>
+                <div className="w-px h-4 bg-slate-200" />
                 <button 
                   onClick={() => handleFeedback(-1)}
                   disabled={feedbackGiven !== null}
-                  className={`p-2 rounded-full transition-colors ${feedbackGiven === -1 ? 'bg-red-100 text-red-600' : 'text-gray-400 hover:bg-gray-100'}`}
+                  className={`p-2 rounded-full transition-all duration-300 ${feedbackGiven === -1 ? 'bg-rose-100 text-rose-600 shadow-sm' : 'text-slate-400 hover:text-rose-600 hover:bg-white hover:shadow-sm'}`}
                   title="Not Helpful"
                 >
-                  <ThumbsDown className="w-5 h-5" />
+                  <ThumbsDown className="w-4 h-4" />
                 </button>
               </div>
             </div>
             
-            <div className="prose prose-blue max-w-none text-gray-700">
+            <div className="prose prose-indigo max-w-none text-slate-700 leading-relaxed text-lg">
               {answer.split("\n").map((line, i) => (
                 <p key={i}>{line}</p>
               ))}
             </div>
           </div>
 
+          {/* Context References */}
           {retrievedFaqs.length > 0 && (
-            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-              <h4 className="text-sm font-bold text-gray-600 uppercase tracking-wider mb-3 flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                Retrieved Context
+            <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60 backdrop-blur-sm">
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-indigo-400" />
+                Sources Consulted
               </h4>
-              <ul className="space-y-2">
+              <ul className="grid gap-3">
                 {retrievedFaqs.map((faq, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
-                    <span className="text-blue-600 font-bold">•</span>
-                    {faq}
+                  <li key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                    <div className="mt-0.5 bg-indigo-100 p-1 rounded-md text-indigo-600">
+                      <FileText className="w-3 h-3" />
+                    </div>
+                    <span className="text-sm font-medium text-slate-700 leading-snug">
+                      {faq}
+                    </span>
                   </li>
                 ))}
               </ul>
