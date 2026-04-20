@@ -1,0 +1,206 @@
+[
+    {
+        "question": "What is a contract?",
+        "answer": "A contract is a legally binding agreement between two or more parties that creates an obligation to do or not do particular things."
+    },
+    {
+        "question": "What are the elements of a valid contract?",
+        "answer": "The essential elements of a valid contract are offer, acceptance, consideration, mutuality of obligation, and competency and capacity."
+    },
+    {
+        "question": "Can a minor enter into a contract?",
+        "answer": "Generally, a minor cannot enter into a legally binding contract. Contracts entered into by minors are usually voidable at the minor's discretion."
+    },
+    {
+        "question": "What is breach of contract?",
+        "answer": "A breach of contract occurs when one party fails to fulfill their obligations as described in the contract without a lawful excuse."
+    },
+    {
+        "question": "What is a tort?",
+        "answer": "A tort is a civil wrong that causes a claimant to suffer loss or harm, resulting in legal liability for the person who commits the tortious act."
+    },
+    {
+        "question": "What is the difference between civil and criminal law?",
+        "answer": "Civil law deals with disputes between individuals or organizations, while criminal law involves actions that are considered offenses against the state or society."
+    },
+    {
+        "question": "What is negligence?",
+        "answer": "Negligence is a failure to exercise appropriate and/or ethical ruled care expected to be exercised amongst specified circumstances."
+    },
+    {
+        "question": "What is a non-disclosure agreement (NDA)?",
+        "answer": "An NDA is a legally binding contract in which one or more parties agree not to disclose confidential information that they have shared with each other."
+    },
+    {
+        "question": "What is intellectual property?",
+        "answer": "Intellectual property refers to creations of the mind, such as inventions, literary and artistic works, designs, symbols, names, and images used in commerce."
+    },
+    {
+        "question": "What is a copyright?",
+        "answer": "A copyright is a form of intellectual property that grants the creator of an original work exclusive rights to its use and distribution."
+    },
+    {
+        "question": "What is a trademark?",
+        "answer": "A trademark is a recognizable sign, design, or expression which identifies products or services of a particular source from those of others."
+    },
+    {
+        "question": "What is a patent?",
+        "answer": "A patent is a set of exclusive rights granted by a sovereign state or intergovernmental organization to an inventor for a limited period, in exchange for detailed public disclosure of an invention."
+    },
+    {
+        "question": "How long does a copyright last?",
+        "answer": "In the United States, for works created after January 1, 1978, copyright protection lasts for the life of the author plus an additional 70 years."
+    },
+    {
+        "question": "How long does a patent last?",
+        "answer": "In the US, a utility patent generally lasts for 20 years from the date on which the application for the patent was filed."
+    },
+    {
+        "question": "What is fair use?",
+        "answer": "Fair use is a doctrine in United States copyright law that allows limited use of copyrighted material without requiring permission from the rights holders."
+    },
+    {
+        "question": "What is an independent contractor?",
+        "answer": "An independent contractor is a natural person, business, or corporation that provides goods or services under a written contract or a verbal agreement, distinct from an employee."
+    },
+    {
+        "question": "What is the difference between an employee and an independent contractor?",
+        "answer": "The main difference is the degree of control the employer has over the worker. Employees are generally subject to more control regarding how, when, and where they work."
+    },
+    {
+        "question": "What is at-will employment?",
+        "answer": "At-will employment means that an employer can terminate an employee at any time for any reason, except an illegal one, or for no reason without incurring legal liability."
+    },
+    {
+        "question": "What is wrongful termination?",
+        "answer": "Wrongful termination happens when an employer discharges an employee for illegal reasons, such as discrimination, retaliation, or breach of contract."
+    },
+    {
+        "question": "What are Miranda rights?",
+        "answer": "Miranda rights are the rights given to people in the United States upon arrest, including the right to remain silent and the right to an attorney."
+    },
+    {
+        "question": "What is a subpoena?",
+        "answer": "A subpoena is a writ ordering a person to attend a court and bring relevant documents or other evidence."
+    },
+    {
+        "question": "What is perjury?",
+        "answer": "Perjury is the intentional act of swearing a false oath or falsifying an affirmation to tell the truth, whether spoken or in writing, concerning matters material to an official proceeding."
+    },
+    {
+        "question": "What is defamation?",
+        "answer": "Defamation is a false statement presented as a fact that causes injury or damage to the character of the person it is about. It includes libel (written) and slander (spoken)."
+    },
+    {
+        "question": "What is an affidavit?",
+        "answer": "An affidavit is a written statement confirmed by oath or affirmation, for use as evidence in court."
+    },
+    {
+        "question": "What is a power of attorney?",
+        "answer": "A power of attorney is a written authorization to represent or act on another's behalf in private affairs, business, or some other legal matter."
+    },
+    {
+        "question": "What is a living will?",
+        "answer": "A living will is a legal document that specifies what actions should be taken for a person's health if they are no longer able to make decisions for themselves because of illness or incapacity."
+    },
+    {
+        "question": "What is a class action lawsuit?",
+        "answer": "A class action is a type of lawsuit where one of the parties is a group of people who are represented collectively by a member of that group."
+    },
+    {
+        "question": "What is a statute of limitations?",
+        "answer": "A statute of limitations is a law that sets the maximum time after an event within which legal proceedings may be initiated."
+    },
+    {
+        "question": "What does 'pro bono' mean?",
+        "answer": "Pro bono is legal work undertaken voluntarily and without payment as a public service."
+    },
+    {
+        "question": "What is double jeopardy?",
+        "answer": "Double jeopardy is a procedural defense that prevents an accused person from being tried again on the same (or similar) charges following an acquittal or conviction."
+    },
+    {
+        "question": "What is a deposition?",
+        "answer": "A deposition is a witness's sworn out-of-court testimony. It is used to gather information as part of the discovery process and, in limited circumstances, may be used at trial."
+    },
+    {
+        "question": "What is a plea bargain?",
+        "answer": "A plea bargain is an agreement in criminal law proceedings, whereby the prosecutor provides a concession to the defendant in exchange for a plea of guilt or nolo contendere."
+    },
+    {
+        "question": "What is eminent domain?",
+        "answer": "Eminent domain is the power of a state, provincial, or national government to take private property for public use."
+    },
+    {
+        "question": "What is a restraining order?",
+        "answer": "A restraining order is a temporary court order issued to prohibit an individual from carrying out a particular action, especially approaching or contacting a specified person."
+    },
+    {
+        "question": "What is a fiduciary duty?",
+        "answer": "A fiduciary duty is a legal obligation of one party to act in the best interest of another."
+    },
+    {
+        "question": "What is hearsay?",
+        "answer": "Hearsay is an out-of-court statement offered to prove the truth of whatever it asserts. It is generally inadmissible as evidence in court proceedings."
+    },
+    {
+        "question": "What is a default judgment?",
+        "answer": "A default judgment is a binding judgment in favor of either party based on some failure to take action by the other party, most often a failure to respond to a summons."
+    },
+    {
+        "question": "What is an injunction?",
+        "answer": "An injunction is an equitable remedy in the form of a court order that compels a party to do or refrain from specific acts."
+    },
+    {
+        "question": "What is a lien?",
+        "answer": "A lien is a form of security interest granted over an item of property to secure the payment of a debt or performance of some other obligation."
+    },
+    {
+        "question": "What is probate?",
+        "answer": "Probate is the legal process in which a will is reviewed to determine whether it is valid and authentic, and the general administering of a deceased person's estate."
+    },
+    {
+        "question": "What is a quitclaim deed?",
+        "answer": "A quitclaim deed is a legal instrument by which the owner of a piece of real property, called the grantor, transfers any interest to a recipient, called the grantee."
+    },
+    {
+        "question": "What is workers' compensation?",
+        "answer": "Workers' compensation is a form of insurance providing wage replacement and medical benefits to employees injured in the course of employment."
+    },
+    {
+        "question": "What is a whistleblower?",
+        "answer": "A whistleblower is a person who exposes any kind of information or activity that is deemed illegal, unethical, or not correct within an organization."
+    },
+    {
+        "question": "What is a trust?",
+        "answer": "A trust is a three-party fiduciary relationship in which the first party, the trustor or settlor, transfers a property upon the second party for the benefit of the third party, the beneficiary."
+    },
+    {
+        "question": "What is a deed?",
+        "answer": "A deed is any legal instrument in writing which passes, affirms or confirms an interest, right, or property and that is signed, attested, delivered, and in some jurisdictions, sealed."
+    },
+    {
+        "question": "What is a warranty deed?",
+        "answer": "A warranty deed is a deed that guarantees a clear title to the buyer of real property."
+    },
+    {
+        "question": "What is an easement?",
+        "answer": "An easement is a nonpossessory right to use and/or enter onto the real property of another without possessing it."
+    },
+    {
+        "question": "What is joint tenancy?",
+        "answer": "Joint tenancy is a legal arrangement in which two or more people own a property together, each with equal rights and obligations."
+    },
+    {
+        "question": "What is tenant in common?",
+        "answer": "Tenancy in common is a situation in which two or more people have ownership interests in a property. Each owner has the right to leave their share of the property to any beneficiary upon the owner's death."
+    },
+    {
+        "question": "What is a foreclosure?",
+        "answer": "Foreclosure is a legal process in which a lender attempts to recover the balance of a loan from a borrower who has stopped making payments to the lender by forcing the sale of the asset used as the collateral for the loan."
+    },
+    {
+        "question": "What is bankruptcy?",
+        "answer": "Bankruptcy is a legal process through which people or other entities who cannot repay debts to creditors may seek relief from some or all of their debts."
+    }
+]
